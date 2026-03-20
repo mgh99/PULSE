@@ -1,0 +1,144 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+}
+
+.section {
+  padding: 18px 20px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.section:last-child { border-bottom: none; }
+
+.sectionLabel {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink4);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+/* BRAND LIST */
+.brandItem {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 9px 0;
+  border-bottom: 0.5px solid var(--border-soft);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.brandItem:last-child { border-bottom: none; }
+.brandItem:hover .brandName { color: var(--gold); }
+
+.bNum {
+  font-family: var(--serif);
+  font-size: 9px;
+  font-style: italic;
+  color: var(--ink4);
+  min-width: 14px;
+}
+
+.brandName {
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--ink);
+  flex: 1;
+  transition: color 0.2s;
+}
+
+.delta {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+}
+.delta.up   { color: var(--gold); }
+.delta.down { color: var(--red); }
+.delta.flat { color: var(--ink4); }
+
+/* SEARCH TERMS */
+.searchItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 0.5px solid var(--border-soft);
+}
+.searchItem:last-child { border-bottom: none; }
+
+.sNum {
+  font-family: var(--serif);
+  font-size: 8px;
+  font-style: italic;
+  color: var(--ink4);
+  min-width: 12px;
+}
+
+.sTerm {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--ink2);
+  flex: 1;
+}
+
+.sBarWrap {
+  width: 40px;
+  height: 1px;
+  background: var(--border);
+}
+
+.sBar {
+  height: 100%;
+  background: var(--gold2);
+}
+
+/* HEATMAP */
+.hmDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  margin-bottom: 3px;
+}
+
+.hmDays span {
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 200;
+  letter-spacing: 0.1em;
+  color: var(--ink4);
+  text-align: center;
+}
+
+.heatmap {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.hmCell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: var(--gold2);
+  border: 0.5px solid var(--border-soft);
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+  animation: hmPulse 3s ease-in-out infinite;
+}
+
+.hmCell:hover {
+  opacity: 1 !important;
+  transform: scale(1.15);
+}
+
+@keyframes hmPulse {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.15); }
+}

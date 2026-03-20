@@ -1,0 +1,74 @@
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.card {
+  padding: 18px 20px;
+  border-right: 0.5px solid var(--border);
+}
+
+.card:last-child { border-right: none; }
+
+.title {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink4);
+  margin-bottom: 12px;
+}
+
+.dayLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.dayLabels span {
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 200;
+  color: var(--ink4);
+  letter-spacing: 0.1em;
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 60px;
+  margin-bottom: 6px;
+}
+
+.barCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.bar {
+  width: 100%;
+  background: var(--gold3);
+  border-top: 1px solid var(--gold2);
+  border-radius: 1px 1px 0 0;
+  transition: background 0.2s;
+  min-height: 2px;
+}
+
+.bar.hot { background: var(--gold2); border-top-color: var(--gold); }
+.bar:hover { background: var(--gold); }
+
+.barLabel {
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 200;
+  letter-spacing: 0.08em;
+  color: var(--ink4);
+}

@@ -1,0 +1,130 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ORNAMENT */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 32px;
+  height: 24px;
+  border-bottom: 0.5px solid var(--border);
+}
+.ornLine   { flex: 1; height: 0.5px; background: var(--border); }
+.ornCenter {
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 200;
+  letter-spacing: 0.4em;
+  color: var(--ink4);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.diamond {
+  width: 4px; height: 4px;
+  background: var(--gold2);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* MAIN 3-COLUMN LAYOUT */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr 220px;
+  flex: 1;
+  min-height: 0;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  border-left: 0.5px solid var(--border);
+  border-right: 0.5px solid var(--border);
+}
+
+/* FOOTER */
+.footer {
+  border-top: 0.5px solid var(--border);
+  padding: 10px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--cream2);
+}
+.footerLeft {
+  font-family: var(--sans);
+  font-size: 7px;
+  font-weight: 200;
+  letter-spacing: 0.2em;
+  color: var(--ink4);
+}
+.footerSources { display: flex; gap: 16px; }
+.footerSrc {
+  font-family: var(--sans);
+  font-size: 7px;
+  font-weight: 200;
+  letter-spacing: 0.12em;
+  color: var(--ink4);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.footerSrc::before {
+  content: '';
+  width: 3px; height: 3px;
+  border: 0.5px solid var(--gold2);
+  transform: rotate(45deg);
+  display: inline-block;
+}
+
+/* LOADING / ERROR */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 16px;
+}
+.loadingWordmark {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: 0.4em;
+  color: var(--ink);
+}
+.loadingText {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: var(--ink4);
+}
+.loadingHint {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 200;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.app > * {
+  animation: fadeUp 0.5s ease both;
+}
+
+.app > *:nth-child(1) { animation-delay: 0s; }
+.app > *:nth-child(2) { animation-delay: 0.05s; }
+.app > *:nth-child(3) { animation-delay: 0.1s; }
+.app > *:nth-child(4) { animation-delay: 0.15s; }
+.app > *:nth-child(5) { animation-delay: 0.2s; }
+.app > *:nth-child(6) { animation-delay: 0.25s; }

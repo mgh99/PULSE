@@ -1,0 +1,117 @@
+.area {
+  padding: 16px 20px;
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.sectionLabel {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink4);
+}
+
+.count {
+  font-family: var(--serif);
+  font-size: 11px;
+  font-style: italic;
+  color: var(--ink4);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.card {
+  padding: 14px;
+  border: 0.5px solid var(--border);
+  background: var(--cream);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 2px; height: 0;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  transition: height 0.3s ease;
+}
+
+.card:hover { border-color: var(--gold2); background: var(--cream2); }
+.card:hover::before { height: 100%; }
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.source {
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: var(--ink4);
+}
+
+.status {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+}
+
+.status.rising   { color: var(--gold); }
+.status.watching { color: var(--ink4); }
+.status.fading   { color: var(--red); }
+
+.title {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.excerpt {
+  font-family: var(--body);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink4);
+}
+
+.tags {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink4);
+  padding: 2px 6px;
+  border: 0.5px solid var(--border);
+}

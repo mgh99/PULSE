@@ -1,0 +1,107 @@
+.briefBody { max-width: 680px; }
+
+.briefHero {
+  margin-bottom: 24px;
+  padding: 24px;
+  background: var(--gold-bg);
+  border: 0.5px solid var(--gold3);
+  border-left: 2px solid var(--gold);
+}
+
+.briefHeroTitle {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.briefHeroSub {
+  font-family: var(--body);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--ink3);
+}
+
+.briefText {
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--ink2);
+  margin-bottom: 32px;
+}
+
+.briefDivider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.briefDividerLine { flex: 1; height: 0.5px; background: var(--border); }
+.briefDividerDiamond {
+  width: 6px; height: 6px;
+  background: var(--gold2);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.briefSignals { display: flex; flex-direction: column; gap: 0; }
+
+.briefSignalItem {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 0.5px solid var(--border-soft);
+  align-items: flex-start;
+}
+
+.briefSignalItem:last-child { border-bottom: none; }
+
+.briefSignalNum {
+  font-family: var(--serif);
+  font-size: 11px;
+  font-style: italic;
+  color: var(--gold);
+  min-width: 24px;
+  padding-top: 2px;
+}
+
+.briefSignalContent { flex: 1; }
+
+.briefSignalSource {
+  font-family: var(--sans);
+  font-size: 7px;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: var(--ink4);
+  margin-bottom: 4px;
+}
+
+.briefSignalTitle {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.briefSignalExcerpt {
+  font-family: var(--body);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--ink4);
+}
+
+.briefSignalStatus {
+  font-family: var(--sans);
+  font-size: 7px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  padding-top: 4px;
+}
+
+.briefSignalStatus.rising   { color: var(--gold); }
+.briefSignalStatus.watching { color: var(--ink4); }
+.briefSignalStatus.fading   { color: var(--red); }
