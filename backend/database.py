@@ -41,6 +41,17 @@ def init_db():
             region      TEXT DEFAULT 'global',
             recorded_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
+        
+        CREATE TABLE IF NOT EXISTS colour_forecasts (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            colour_name  TEXT NOT NULL,
+            hex          TEXT NOT NULL,
+            status       TEXT,
+            confidence   INTEGER DEFAULT 0,
+            lang         TEXT DEFAULT 'en',
+            cycle_id     TEXT,
+            recorded_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
     """)
 
     conn.commit()

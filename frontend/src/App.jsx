@@ -6,6 +6,7 @@ import ChartRow from './components/ChartRow.jsx'
 import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
 import KPIRow from './components/KPIRow.jsx'
+import LabView from './components/LabView.jsx'
 import RunwayView from './components/RunwayView.jsx'
 import SidebarLeft from './components/SidebarLeft.jsx'
 import SidebarRight from './components/SidebarRight.jsx'
@@ -113,23 +114,29 @@ export default function App() {
       <Ornament />
 
       <div className={styles.layout}>
-        <SidebarLeft
-          categoryMix={data?.category_mix}
-          editorialBrief={data?.editorial_brief}
-          generatedAt={data?.generated_at}
-          onCategoryChange={setActiveCategory}
-          activeCategory={activeCategory}
-          lang={lang}
-          regionalScores={data?.regional_scores}
-        />
+        {activeTab === 5 ? (
+          // Lab tiene su propio layout completo sin sidebars del dashboard
+          <main className={styles.centerFull}>
+            <LabView lang={lang} />
+          </main>
+        ) : (
+          <>
+            <SidebarLeft
+              categoryMix={data?.category_mix}
+              editorialBrief={data?.editorial_brief}
+              generatedAt={data?.generated_at}
+              onCategoryChange={setActiveCategory}
+              activeCategory={activeCategory}
+              lang={lang}
+            />
 
-        <main className={styles.center}>
-          {activeTab === 0 && (
-            <>
-              <Hero hero={data?.hero} />
-              <KPIRow kpis={data?.kpis} />
-              <ChartRow categoryMix={data?.category_mix} />
-              <SignalGrid signals={filteredSignals} activeCategory={activeCategory} />
+            <main className={styles.center}>
+              {activeTab === 0 && (
+              <>
+                <Hero hero={data?.hero} />
+                <KPIRow kpis={data?.kpis} />
+                <ChartRow categoryMix={data?.category_mix} />
+                <SignalGrid signals={filteredSignals} activeCategory={activeCategory} />
             </>
           )}
           {activeTab === 1 && <RunwayView signals={data?.signals || []} />}
@@ -141,8 +148,11 @@ export default function App() {
         <SidebarRight
           brands={data?.brands || []}
           searchTerms={data?.search_terms || []}
+          lang={lang}
         />
-      </div>
+      </>
+    )}
+  </div>
 
       <footer className={styles.footer}>
         <span className={styles.footerLeft}>

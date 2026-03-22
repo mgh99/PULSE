@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import styles from './SidebarRight.module.css'
 
 const ROMAN = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii']
@@ -9,9 +10,30 @@ const HEATMAP_DATA = [
   5,6,8,9,10,5,3,
 ]
 
-function Heatmap() {
+function Heatmap({ lang }) {
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    fetch(`/api/heatmap`)
+      .then(r => r.json())
+      .then(d => setData(d))
+      .catch(() => {})
+  }, [])
+
   const days = ['M','T','W','T','F','S','S']
-  const max  = Math.max(...HEATMAP_DATA)
+
+  // Build a 28-day grid from today backwards
+  const grid = []
+  const today = new Date()
+  for (let i = 27; i >= 0; i--) {
+    const d = new Date(today)
+    d.setDate(today.getDate() - i)
+    const key = d.toISOString().split('T')[0]
+    const found = data.find(r => r.day === key)
+    grid.push({ date: key, count: found?.count || 0 })
+  }
+
+  const max = Math.max(...grid.map(g => g.count), 1)
 
   return (
     <div>
@@ -19,11 +41,12 @@ function Heatmap() {
         {days.map((d, i) => <span key={i}>{d}</span>)}
       </div>
       <div className={styles.heatmap}>
-        {HEATMAP_DATA.map((v, i) => (
+        {grid.map((g, i) => (
           <div
             key={i}
             className={styles.hmCell}
-            style={{ opacity: 0.15 + (v / max) * 0.85 }}
+            style={{ opacity: g.count === 0 ? 0.1 : 0.2 + (g.count / max) * 0.8 }}
+            title={`${g.date}: ${g.count} snapshots`}
           />
         ))}
       </div>
@@ -31,7 +54,7 @@ function Heatmap() {
   )
 }
 
-export default function SidebarRight({ brands = [], searchTerms = [] }) {
+export default function SidebarRight({ brands = [], searchTerms = [], lang = 'en' }) {
   const maxSearch = Math.max(...searchTerms.map(t => t.velocity || 0), 1)
 
   return (
@@ -89,7 +112,7 @@ export default function SidebarRight({ brands = [], searchTerms = [] }) {
 
       <div className={styles.section}>
         <div className={styles.sectionLabel}>Activity Heatmap · 4w</div>
-        <Heatmap />
+        <Heatmap lang={lang} />
       </div>
 
     </aside>

@@ -70,6 +70,87 @@ OUTPUT_SCHEMA = {
     }
 }
 
+COLOUR_SYSTEM_PROMPT = """You are a colour forecasting editor at PULSE, a global fashion intelligence platform.
+
+You receive live fashion signals and your job is to identify and predict the dominant colours of the coming season.
+You think like a senior colour forecaster at Pantone or WGSN — authoritative, precise, editorial.
+
+You must respond with ONLY a valid JSON object. No preamble, no markdown, no explanation.
+"""
+
+COLOUR_OUTPUT_SCHEMA = {
+    "season": "string — e.g. 'SS26' or 'FW26'",
+    "hero_colour": {
+        "name": "string — editorial colour name (e.g. 'Warm Tobacco', not just 'brown')",
+        "hex": "string — approximate hex code",
+        "subtitle": "string — one evocative line about this colour",
+        "signal_strength": {
+            "runway": "integer 0-100",
+            "street": "integer 0-100",
+            "search": "integer 0-100",
+            "editorial": "integer 0-100"
+        }
+    },
+    "colours": [
+        {
+            "name": "string — editorial colour name",
+            "hex": "string — approximate hex code",
+            "status": "hero | rising | watching | emerging",
+            "confidence": "integer 0-100",
+            "description": "string — max 20 words, why this colour is emerging",
+            "combinations": ["list of 4-5 hex codes that pair well with this colour"],
+            "sources": ["list of 2-3 source names that signal this colour"]
+        }
+    ],
+    "forecast_next": [
+        {
+            "name": "string — editorial colour name",
+            "hex": "string — approximate hex code",
+            "confidence": "integer 0-100",
+            "season": "string — e.g. 'FW26'"
+        }
+    ],
+    "editorial_analysis": "string — 2-3 sentences from a senior colour editor. Max 50 words."
+}
+
+
+def build_colour_prompt(signals: list, lang: str = "en") -> str:
+    signal_text = "\n".join([
+        f"- [{s.get('source', 'unknown')}] {s.get('title', '')} | {s.get('content', '')[:150]}"
+        for s in signals[:25]
+    ])
+
+    schema_str = json.dumps(COLOUR_OUTPUT_SCHEMA, indent=2)
+
+    lang_instruction = (
+        "Respond entirely in Spanish. All colour names, descriptions, and analysis must be in Spanish."
+        if lang == "es"
+        else "Respond entirely in English."
+    )
+
+    return f"""Here are the latest fashion signals:
+
+{signal_text}
+
+---
+
+{lang_instruction}
+
+Analyse these signals and identify the dominant and emerging colours for the coming season.
+Return ONLY valid JSON matching this schema exactly:
+
+{schema_str}
+
+Rules:
+- colour names must be editorial and evocative, never generic (not 'brown', but 'Warm Tobacco')
+- hex codes should be realistic approximations of the colour described
+- combinations should be harmonious palettes that a stylist would actually use
+- confidence scores should reflect actual signal strength, not be uniformly high
+- include exactly 6 colours in the colours array
+- include exactly 4 colours in forecast_next
+- status 'hero' for the single most dominant colour, 'rising' for strong signals, 'watching' for emerging, 'emerging' for early signals
+"""
+
 
 def build_prompt(signals: List[Dict], lang: str = "en") -> str:
     signal_text = "\n".join([

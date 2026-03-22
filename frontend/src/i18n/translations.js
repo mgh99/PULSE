@@ -1,7 +1,7 @@
 export const t = {
   en: {
     // Header
-    nav: ['Radar', 'Runway', 'Street', 'Archive', 'Brief'],
+    nav: ['Radar', 'Runway', 'Street', 'Archive', 'Brief', 'Lab'],
     live: 'Live',
 
     // Ornament
@@ -76,7 +76,7 @@ export const t = {
 
   es: {
     // Header
-    nav: ['Radar', 'Pasarela', 'Calle', 'Archivo', 'Informe'],
+    nav: ['Radar', 'Pasarela', 'Calle', 'Archivo', 'Informe', 'Laboratorio'],
     live: 'En vivo',
 
     // Ornament

@@ -128,3 +128,9 @@
 .app > *:nth-child(4) { animation-delay: 0.15s; }
 .app > *:nth-child(5) { animation-delay: 0.2s; }
 .app > *:nth-child(6) { animation-delay: 0.25s; }
+
+.centerFull {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / -1;
+}
