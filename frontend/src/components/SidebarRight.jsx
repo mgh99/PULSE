@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import styles from './SidebarRight.module.css'
 
 const ROMAN = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii']
+const API_BASE = import.meta.env.VITE_API_URL || ''
 
 const HEATMAP_DATA = [
   2,3,4,3,5,2,1,
@@ -14,7 +15,7 @@ function Heatmap({ lang }) {
   const [data, setData] = useState([])
 
   useEffect(() => {
-    fetch(`/api/heatmap`)
+    fetch(`${API_BASE}/api/heatmap`)
       .then(r => r.json())
       .then(d => setData(d))
       .catch(() => {})

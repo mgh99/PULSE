@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import styles from './ColourIntelligence.module.css'
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 function FeatureDesc() {
   return (
     <div className={styles.featureDesc}>
@@ -202,14 +204,14 @@ export default function ColourIntelligence({ lang }) {
 
   useEffect(() => {
     setLoading(true)
-    fetch(`/api/colours?lang=${lang}`)
+    fetch(`${API_BASE}/api/colours?lang=${lang}`)
       .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
       .then(d => { setData(d); setLoading(false) })
       .catch(e => { setError(e.message); setLoading(false) })
   }, [lang])
 
   useEffect(() => {
-    fetch(`/api/colours/consensus?lang=${lang}&days=7`)
+    fetch(`${API_BASE}/api/colours/consensus?lang=${lang}&days=7`)
       .then(r => r.json())
       .then(d => { setConsensus(d); setConsensusLoading(false) })
       .catch(() => setConsensusLoading(false))
