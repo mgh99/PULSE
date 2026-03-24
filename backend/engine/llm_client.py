@@ -2,33 +2,40 @@ import json
 import os
 from typing import Dict, Optional
 
+import httpx
 from engine.prompt_builder import SYSTEM_PROMPT, build_prompt
-from mistralai import Mistral
-
-
-def _get_client() -> Mistral:
-    api_key = os.getenv("MISTRAL_API_KEY")
-    if not api_key:
-        raise ValueError("MISTRAL_API_KEY not set in environment")
-    return Mistral(api_key=api_key)
 
 
 def generate_dashboard(signals: list, lang: str = "en") -> Optional[Dict]:
-    client = _get_client()
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise ValueError("GEMINI_API_KEY not set")
+
     prompt = build_prompt(signals, lang=lang)
 
-    try:
-        response = client.chat.complete(
-            model="mistral-small-latest",
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": prompt},
-            ],
-            temperature=0.4,
-            max_tokens=3000,
-        )
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
 
-        raw = response.choices[0].message.content.strip()
+    payload = {
+        "contents": [
+            {
+                "parts": [
+                    {"text": SYSTEM_PROMPT + "\n\n" + prompt}
+                ]
+            }
+        ],
+        "generationConfig": {
+            "temperature": 0.4,
+            "maxOutputTokens": 3000,
+        }
+    }
+
+    try:
+        with httpx.Client(timeout=60) as client:
+            response = client.post(url, json=payload)
+            response.raise_for_status()
+
+        data = response.json()
+        raw = data["candidates"][0]["content"]["parts"][0]["text"].strip()
 
         if raw.startswith("```"):
             raw = raw.split("```")[1]
@@ -44,15 +51,11 @@ def generate_dashboard(signals: list, lang: str = "en") -> Optional[Dict]:
         print(f"[llm] JSON parse error: {e}")
         return None
     except Exception as e:
-        print(f"[llm] Mistral API error: {e}")
+        print(f"[llm] Gemini API error: {e}")
         return None
 
 
 def _fallback_dashboard(signals: list) -> Dict:
-    """
-    Returns a minimal valid dashboard structure when LLM fails.
-    Prevents the frontend from breaking.
-    """
     return {
         "hero": {
             "title": "Fashion intelligence loading...",
@@ -76,13 +79,5 @@ def _fallback_dashboard(signals: list) -> Dict:
             "other": 20
         },
         "search_terms": [],
-        "editorial_brief": "Collecting the latest signals from global fashion sources. Please wait for the first analysis.",
-        "regional_scores": {
-            "milan":    88,
-            "paris":    81,
-            "tokyo":    74,
-            "new_york": 69,
-            "seoul":    62,
-            "london":   55
-        }
+        "editorial_brief": "Collecting the latest signals from global fashion sources. Please wait for the first analysis."
     }
