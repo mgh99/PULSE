@@ -117,7 +117,7 @@ COLOUR_OUTPUT_SCHEMA = {
 def build_colour_prompt(signals: list, lang: str = "en") -> str:
     signal_text = "\n".join([
         f"- [{s.get('source', 'unknown')}] {s.get('title', '')} | {s.get('content', '')[:150]}"
-        for s in signals[:15]
+        for s in signals[:25]
     ])
 
     schema_str = json.dumps(COLOUR_OUTPUT_SCHEMA, indent=2)
@@ -155,7 +155,7 @@ Rules:
 def build_prompt(signals: List[Dict], lang: str = "en") -> str:
     signal_text = "\n".join([
         f"- [{s.get('source', 'unknown')}] {s.get('title', '')} | {s.get('content', '')[:200]}"
-        for s in signals[:15]
+        for s in signals[:25]
     ])
 
     schema_str = json.dumps(OUTPUT_SCHEMA, indent=2)
