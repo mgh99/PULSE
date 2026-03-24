@@ -16,32 +16,25 @@ def _get_client() -> Mistral:
 
 
 def generate_colour_forecast(signals: list, lang: str = "en") -> Optional[Dict]:
-    import httpx
-    api_key = os.getenv("GEMINI_API_KEY")
+    api_key = os.getenv("MISTRAL_API_KEY")
     if not api_key:
         return _fallback_colours()
 
+    client = Mistral(api_key=api_key)
     prompt = build_colour_prompt(signals, lang=lang)
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
-
-    payload = {
-        "contents": [
-            {"parts": [{"text": COLOUR_SYSTEM_PROMPT + "\n\n" + prompt}]}
-        ],
-        "generationConfig": {
-            "temperature": 0.5,
-            "maxOutputTokens": 2500,
-        }
-    }
-
     try:
-        with httpx.Client(timeout=60) as client:
-            response = client.post(url, json=payload)
-            response.raise_for_status()
+        response = client.chat.complete(
+            model="mistral-small-latest",
+            messages=[
+                {"role": "system", "content": COLOUR_SYSTEM_PROMPT},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0.5,
+            max_tokens=2500,
+        )
 
-        data = response.json()
-        raw = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+        raw = response.choices[0].message.content.strip()
 
         if raw.startswith("```"):
             raw = raw.split("```")[1]
@@ -56,7 +49,7 @@ def generate_colour_forecast(signals: list, lang: str = "en") -> Optional[Dict]:
         print(f"[colour] JSON parse error: {e}")
         return _fallback_colours()
     except Exception as e:
-        print(f"[colour] Gemini error: {e}")
+        print(f"[colour] Mistral error: {e}")
         return _fallback_colours()
 
 

@@ -2,40 +2,33 @@ import json
 import os
 from typing import Dict, Optional
 
-import httpx
 from engine.prompt_builder import SYSTEM_PROMPT, build_prompt
+from mistralai import Mistral
+
+
+def _get_client() -> Mistral:
+    api_key = os.getenv("MISTRAL_API_KEY")
+    if not api_key:
+        raise ValueError("MISTRAL_API_KEY not set")
+    return Mistral(api_key=api_key)
 
 
 def generate_dashboard(signals: list, lang: str = "en") -> Optional[Dict]:
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise ValueError("GEMINI_API_KEY not set")
-
+    client = _get_client()
     prompt = build_prompt(signals, lang=lang)
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
-
-    payload = {
-        "contents": [
-            {
-                "parts": [
-                    {"text": SYSTEM_PROMPT + "\n\n" + prompt}
-                ]
-            }
-        ],
-        "generationConfig": {
-            "temperature": 0.4,
-            "maxOutputTokens": 3000,
-        }
-    }
-
     try:
-        with httpx.Client(timeout=60) as client:
-            response = client.post(url, json=payload)
-            response.raise_for_status()
+        response = client.chat.complete(
+            model="mistral-small-latest",
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0.4,
+            max_tokens=3000,
+        )
 
-        data = response.json()
-        raw = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+        raw = response.choices[0].message.content.strip()
 
         if raw.startswith("```"):
             raw = raw.split("```")[1]
@@ -51,7 +44,7 @@ def generate_dashboard(signals: list, lang: str = "en") -> Optional[Dict]:
         print(f"[llm] JSON parse error: {e}")
         return None
     except Exception as e:
-        print(f"[llm] Gemini API error: {e}")
+        print(f"[llm] Mistral API error: {e}")
         return None
 
 
